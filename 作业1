@@ -1,0 +1,30 @@
+import requests
+import json
+
+def get_weather(city):
+    api_key = "c547f48a904bd3d020f8263eef535c37"
+    url = f"http://apis.juhe.cn/simpleWeather/query?key={api_key}&city={city}"
+    headers = {"Content-Type": "application/x-www-form-urlencoded"}
+    response = requests.get(url, headers=headers)
+    data = response.json()
+    return data
+
+def display_weather(data):
+    print(data)  # 打印完整的返回JSON数据，用于调试
+
+    if data.get("error_code") == 0:
+        city = data["result"]["city"]
+        weather = data["result"]["realtime"]["info"]
+        temperature = data["result"]["realtime"]["temperature"]
+        humidity = data["result"]["realtime"]["humidity"]
+        wind_speed = data["result"]["realtime"]["direct"]
+
+        print(f"城市：{city}")
+        print(f"天气：{weather}")
+        print(f"温度：{temperature}℃")
+        print(f"湿度：{humidity}%")
+        print(f"风速：{wind_speed}")
+
+city = input("请输入城市名：")
+weather_data = get_weather(city)
+display_weather(weather_data)
